@@ -1,69 +1,115 @@
 import time
 import random
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation, FFMpegWriter
+from matplotlib.colors import ListedColormap
 
-# --- Simulation of sensor data ---
-def read_sensor():
-    """Simulates reading sensor data (e.g., distance to weed)."""
-    return random.randint(10, 50)  # Simulate distance in cm
 
-# --- Navigation functions ---
-def move_forward(speed=1.0):
-    print(f"Moving forward at speed: {speed}")
-    time.sleep(1)
-
-def turn_right(angle=90):
-    print(f"Turning right by {angle} degrees")
-    time.sleep(0.5)
-
-def turn_left(angle=90):
-    print(f"Turning left by {angle} degrees")
-    time.sleep(0.5)
-
-def stop_robot():
-    print("Stopping the robot")
-    time.sleep(0.2)
-
-# --- Weeding functions ---
-def is_weed_detected():
-    distance = read_sensor()
-    if distance < 20:  # Weed detected if distance < 20 cm
-        return True
-    return False
-
-def remove_weed():
-    print("Weed detected! Removing it...")
-    time.sleep(2)
-    print("Weed removed.")
-
-# --- Main weeding logic ---
 def paddy_weeding_system():
-    field_width = 100
-    field_length = 150
-    current_x = 0
-    current_y = 0
-    direction = "north"
 
-    while current_y < field_length:
-        move_forward()
-        current_y += 1
+    GRID_SIZE = 10
 
-        if is_weed_detected():
-            remove_weed()
+    # ---- Create Field ----
+    field = np.zeros((GRID_SIZE, GRID_SIZE), dtype=int)
 
-        if current_x >= field_width:
-            turn_right(90)
-            direction = "south"
-            current_x = field_width
-        elif current_x <= 0 and direction == "south":
-            turn_right(90)
-            direction = "north"
-            current_x = 0
-        elif direction == "north" and current_x < field_width:
-            move_forward()
-            current_x += 1
+    # AI-based probability heatmap
+    probability_map = np.random.rand(GRID_SIZE, GRID_SIZE)
+    threshold = 0.75
 
-    print("Weeding complete.")
+    for i in range(GRID_SIZE):
+        for j in range(GRID_SIZE):
+            if probability_map[i][j] > threshold:
+                field[i][j] = 1   # Weed
 
-# ✅ Correct line
+    # Add obstacles
+    for _ in range(8):
+        x = random.randint(0, GRID_SIZE - 1)
+        y = random.randint(0, GRID_SIZE - 1)
+        if field[x][y] == 0:
+            field[x][y] = -1   # Obstacle
+
+    # ---- Counters ----
+    weed_removed = 0
+    cells_covered = 0
+    total_weeds = np.count_nonzero(field == 1)
+
+    # ---- Zig-Zag Path ----
+    path = []
+    for i in range(GRID_SIZE):
+        if i % 2 == 0:
+            col_range = range(GRID_SIZE)
+        else:
+            col_range = range(GRID_SIZE - 1, -1, -1)
+
+        for j in col_range:
+            path.append((i, j))
+
+    start_time = time.time()
+
+    # ---- Animation Setup ----
+    fig, ax = plt.subplots()
+
+    # Background heatmap
+    ax.imshow(probability_map, cmap='YlOrRd', alpha=0.4)
+
+    cmap = ListedColormap(["black", "white", "red", "green"])
+    img = ax.imshow(field, cmap=cmap, vmin=-1, vmax=2)
+
+    robot_dot, = ax.plot([], [], 'bo', markersize=8)
+
+    ax.set_xticks(range(GRID_SIZE))
+    ax.set_yticks(range(GRID_SIZE))
+    ax.grid(True)
+
+    def update(frame):
+        nonlocal weed_removed, cells_covered
+
+        x, y = path[frame]
+        cells_covered += 1
+
+        # Skip obstacle
+        if field[x][y] == -1:
+            robot_dot.set_data(y, x)
+            return img, robot_dot
+
+        # Remove weed
+        if field[x][y] == 1:
+            field[x][y] = 2
+            weed_removed += 1
+
+        img.set_data(field)
+        robot_dot.set_data(y, x)
+
+        efficiency = weed_removed / cells_covered if cells_covered else 0
+        elapsed_time = round(time.time() - start_time, 2)
+
+        ax.set_title(
+            f"Smart Weeding Robot Simulation\n"
+            f"Weeds Removed: {weed_removed}/{total_weeds} | "
+            f"Cells Covered: {cells_covered} | "
+            f"Efficiency: {efficiency:.2f} | "
+            f"Time: {elapsed_time}s"
+        )
+
+        return img, robot_dot
+
+    ani = FuncAnimation(
+        fig,
+        update,
+        frames=len(path),
+        interval=300,
+        repeat=False
+    )
+
+    # ---- Save Video in Same Project Folder ----
+    output_path = os.path.join(os.path.dirname(__file__), "smart_weeding_robot.mp4")
+    writer = FFMpegWriter(fps=3)
+    ani.save(output_path, writer=writer)
+
+    plt.show()
+
+
 if __name__ == "__main__":
     paddy_weeding_system()
