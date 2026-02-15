@@ -57,7 +57,7 @@ Efficiency = Weeds Removed / Cells Covered
 
 📷 Screenshot:
 
-![Simulation Screenshot](Screenshot 2026-02-15 154906.png)
+screenshot.png
 
 🎥 Video Demo:
 
