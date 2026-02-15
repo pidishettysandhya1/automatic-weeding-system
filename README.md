@@ -68,7 +68,7 @@ Efficiency = Weeds Removed / Cells Covered
 ## 📂 Project Structure
 automatic-weeding-system/
 │
-├── paddy_weeding_system.py        # Main simulation script
-├── smart_weeding_robot.mp4        # Simulation output video
-├── Screenshot 2026-02-15 154906.png  # Simulation screenshot
-├── README.md                      # Project documentation
+├── paddy_weeding_system.py      # Main simulation code
+├── smart_weeding_robot.mp4     # Simulation video output
+├── Screenshot 2026-02-15 154906.png   # Simulation screenshot
+├── README.md                   # Project documentation
