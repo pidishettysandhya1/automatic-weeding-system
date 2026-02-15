@@ -59,9 +59,6 @@ Efficiency = Weeds Removed / Cells Covered
 
 [![Simulation Screenshot](Screenshot 2026-02-15 154906.png)](smart_weeding_robot.mp4)
 
-### 🎥 Video Demo
-
-[▶ Click here to watch the simulation video](smart_weeding_robot.mp4)
 ---
 
 ## 📂 Project Structure
