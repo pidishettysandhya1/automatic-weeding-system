@@ -63,18 +63,18 @@ Efficiency = Weeds Removed / Cells Covered
 
 📷 Screenshot:
 
-[![Simulation Screenshot](Screenshot%202026-02-15%20154906.png)
+![Simulation Screenshot](Screenshot%202026-02-15%20154906.png)
 
 
 ### 🎥 Video Demo
-[▶ Download simulation video](https://github.com/pidishettysandhya1/automatic-weeding-system/raw/refs/heads/main/smart_weeding_robot.mp4)
+[▶ Watch/Download simulation video](https://github.com/pidishettysandhya1/automatic-weeding-system/raw/refs/heads/main/smart_weeding_robot.mp4)
 
 ---
 
-## 📂 Project Structure
-automatic-weeding-system/
-│
-├── paddy_weeding_system.py      # Main simulation code
-├── smart_weeding_robot.mp4     # Simulation video output
-├── Screenshot 2026-02-15 154906.png   # Simulation screenshot
-├── README.md                   # Project documentation
+## 📊 Results
+
+- Field Coverage: 100%
+- AI-based weed probability mapping
+- Obstacle detection enabled
+- Real-time efficiency calculation
+- Animated visualization using Matplotlib
