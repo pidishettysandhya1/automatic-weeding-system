@@ -1,5 +1,11 @@
 # 🌾 Smart Autonomous Paddy Weeding Robot Simulation
 
+AI-based autonomous agricultural robot simulation achieving intelligent weed detection and efficient field coverage using probability mapping and adaptive traversal.
+
+![Smart Weeding Robot](smart_weeding_robot.gif)
+
+🚀 Built using Python, NumPy & Matplotlib | AI-based Simulation Project
+
 ## 📌 Project Overview
 
 This project simulates an AI-driven agricultural weeding robot using Python.  
